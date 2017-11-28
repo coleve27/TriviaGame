@@ -46,7 +46,7 @@ $(".choice_a").attr("data-answerValue", 0);
 $(".choice_b").attr("data-answerValue", 1);
 $(".choice_c").attr("data-answerValue", 2);
 
-$("div").on("click", function() {
+$(".choices > div").on("click", function() {
 
   var answerValue = ($(this).attr("data-answerValue"));
   answerValue = parseInt(answerValue);
