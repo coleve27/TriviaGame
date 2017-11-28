@@ -1,10 +1,10 @@
 alert("hey there sexy");
 
-
 var correctAnswers = 0;
 var incorrectAnswers = 0;
 
 var count = 30;
+var n = 0;
 var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
 
 function timer() {
@@ -37,10 +37,10 @@ var questions = [
 
 ];
 
-$(".question").html("<h1>" + questions[0].q + "</h1>");
-$(".choice_a").html("<h1>" + questions[0].c[0] + "</h1>");
-$(".choice_b").html("<h1>" + questions[0].c[1] + "</h1>");
-$(".choice_c").html("<h1>" + questions[0].c[2] + "</h1>");
+$(".question").html("<h1>" + questions[n].q + "</h1>");
+$(".choice_a").html("<h1>" + questions[n].c[0] + "</h1>");
+$(".choice_b").html("<h1>" + questions[n].c[1] + "</h1>");
+$(".choice_c").html("<h1>" + questions[n].c[2] + "</h1>");
 
 $(".choice_a").attr("data-answerValue", 0);
 $(".choice_b").attr("data-answerValue", 1);
@@ -55,10 +55,12 @@ $(".choices > div").on("click", function() {
   if (answerValue == questions[0].answer) {
     clearInterval(counter);
     alert("correct guess!");
-    correctAnswers++
+    correctAnswers++ ;
+    n++ ;
   } else {
     clearInterval(counter);
     alert("incorrect guess!")
-    incorrectAnswers++
+    incorrectAnswers++ ;
+    n++ ;
   }
 });
