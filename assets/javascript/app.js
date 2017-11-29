@@ -20,7 +20,6 @@ function timer() {
 
 }
 
-
 var questions = [
   // question 1
   {
@@ -37,30 +36,39 @@ var questions = [
 
 ];
 
+function shiftQuestion() {
+
 $(".question").html("<h1>" + questions[n].q + "</h1>");
 $(".choice_a").html("<h1>" + questions[n].c[0] + "</h1>");
 $(".choice_b").html("<h1>" + questions[n].c[1] + "</h1>");
 $(".choice_c").html("<h1>" + questions[n].c[2] + "</h1>");
 
+}
+
 $(".choice_a").attr("data-answerValue", 0);
 $(".choice_b").attr("data-answerValue", 1);
 $(".choice_c").attr("data-answerValue", 2);
 
-$(".choices > div").on("click", function() {
+$(".choices > div").one("click", function() {
 
   var answerValue = ($(this).attr("data-answerValue"));
   answerValue = parseInt(answerValue);
   console.log(answerValue);
+
 
   if (answerValue == questions[0].answer) {
     clearInterval(counter);
     alert("correct guess!");
     correctAnswers++ ;
     n++ ;
+
   } else {
     clearInterval(counter);
     alert("incorrect guess!")
     incorrectAnswers++ ;
     n++ ;
   }
+  shiftQuestion();
 });
+
+shiftQuestion();
