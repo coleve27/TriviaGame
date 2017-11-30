@@ -1,8 +1,3 @@
-var correctAnswers = 0;
-var incorrectAnswers = 0;
-var count = 30;
-var n = 0;
-var counter = setInterval(timer, 1000);
 var questions = [
   // question 1
   {
@@ -19,68 +14,104 @@ var questions = [
 
 ];
 
+var correctAnswers = 0;
+var incorrectAnswers = 0;
+var count = 30;
+var n = 0;
+
+$(".stats").hide();
+$(".right").hide();
+$(".wrong").hide();
+$(".restart").hide();
+
+var counter = setInterval(timer, 1000);
+
+choiceData();
+shiftQuestion();
+setHandler();
+
+$(".restart").on("click", restart);
+
+function setHandler() {
+  $(".choices > div").on("click", function() {
+    var answerValue = ($(this).attr("data-answerValue"));
+    answerValue = parseInt(answerValue);
+
+    if (answerValue == questions[n].answer) {
+      $(".choices > div").off("click");
+      $(".right").show();
+      correctAnswers++;
+      clearInterval(counter);
+      setTimeout(nextQuestion, 1000);
+    } else {
+      $(".choices > div").off("click");
+      $(".wrong").show();
+      incorrectAnswers++;
+      clearInterval(counter);
+      setTimeout(nextQuestion, 1000);
+    }
+  });
+}
+
+function endGame() {
+  $(".choices > div").off("click");
+  clearInterval(counter);
+  $(".endGame").text("Game Over");
+  $(".correct").text("Right Answers: " + correctAnswers);
+  $(".incorrect").text("Wrong Answers: " + incorrectAnswers);
+  $(".stats").show();
+  $(".restart").show();
+}
+
+function nextQuestion() {
+  n++;
+  $(".right").hide();
+  $(".wrong").hide();
+  if (questions.length === n) {
+    endGame();
+    return;
+  }
+  count = 30;
+  counter = setInterval(timer, 1000);
+  shiftQuestion();
+  setHandler();
+}
+
 function timer() {
   count--;
   if (count <= -1) {
-    clearInterval(counter);
-    alert("Time is up!")
+    alert("Time is up!");
+    nextQuestion();
     return;
   }
 
-  console.log(count);
   $("#countdown").text(count);
-
 }
-choiceData();
 
 function choiceData() {
-
-$(".choice_a").attr("data-answerValue", 0);
-$(".choice_b").attr("data-answerValue", 1);
-$(".choice_c").attr("data-answerValue", 2);
+  $(".choice_a").attr("data-answerValue", 0);
+  $(".choice_b").attr("data-answerValue", 1);
+  $(".choice_c").attr("data-answerValue", 2);
 }
-shiftQuestion();
 
 function shiftQuestion() {
-
   $(".question").html("<h1>" + questions[n].q + "</h1>");
   $(".choice_a").html("<h1>" + questions[n].c[0] + "</h1>");
   $(".choice_b").html("<h1>" + questions[n].c[1] + "</h1>");
   $(".choice_c").html("<h1>" + questions[n].c[2] + "</h1>");
-
 }
 
-
-$(".choices > div").one("click", function() {
-
-  var answerValue = ($(this).attr("data-answerValue"));
-  answerValue = parseInt(answerValue);
-  console.log(answerValue);
-
-
-  if (answerValue == questions[0].answer) {
-    clearInterval(counter);
-    alert("correct guess!");
-    correctAnswers++;
-    n++;
-
-  } else {
-    clearInterval(counter);
-    alert("incorrect guess!")
-    incorrectAnswers++;
-    n++;
-  }
-  if(questions.length === n){
-    endGame();
-  } else {
-    console.log(n);
-    console.log(questions.length);
-    shiftQuestion();
-  }
-});
-
-
-function endGame() {
-    alert("game over");
-
+function restart() {
+  console.log("restart called");
+  correctAnswers = 0;
+  incorrectAnswers = 0;
+  n = 0;
+  shiftQuestion();
+  setHandler();
+  count = 30;
+  counter = setInterval(timer, 1000);
+  $(".stats").hide();
+  $(".right").hide();
+  $(".wrong").hide();
+  $(".restart").hide();
 }
