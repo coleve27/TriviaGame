@@ -1,15 +1,28 @@
 var questions = [
-  // question 1
   {
-    "q": "How big is the sun?",
-    "c": ["432,288 miles", "553,211 miles", "732.983 miles"],
+    "q": "What is the fasted fish?",
+    "c": ["Sailfish", "Starfish", "Dolphin"],
     "answer": 0
   },
-  // question 2
   {
-    "q": "How long would it take a space shuttle (going 5 miles per second) to travel a light year?",
-    "c": ["37,200 years", "20,320 years", "60,730 years"],
+    "q": "How many varieties of goldfish are there?",
+    "c": ["250", "92", "20"],
     "answer": 0
+  },
+  {
+    "q": "How causes water to move?",
+    "c": ["Wind", "Wind and Gravity", "Gravity"],
+    "answer": 1
+  },
+  {
+    "q": "What is the most poisonous fish?",
+    "c": ["Baluga Whale", "Sea Snail", "Pufferfish"],
+    "answer": 2
+  },
+  {
+    "q": "What is the smallest ocean",
+    "c": ["The Pacific Ocean", "The Arctic Ocean", "The Indian Ocean"],
+    "answer": 1
   }
 
 ];
@@ -23,7 +36,7 @@ $(".stats").hide();
 $(".right").hide();
 $(".wrong").hide();
 $(".restart").hide();
-
+$(".timealert").hide();
 var counter = setInterval(timer, 1000);
 
 choiceData();
@@ -42,13 +55,13 @@ function setHandler() {
       $(".right").show();
       correctAnswers++;
       clearInterval(counter);
-      setTimeout(nextQuestion, 1000);
+      setTimeout(nextQuestion, 2000);
     } else {
       $(".choices > div").off("click");
       $(".wrong").show();
       incorrectAnswers++;
       clearInterval(counter);
-      setTimeout(nextQuestion, 1000);
+      setTimeout(nextQuestion, 2000);
     }
   });
 }
@@ -56,7 +69,7 @@ function setHandler() {
 function endGame() {
   $(".choices > div").off("click");
   clearInterval(counter);
-  $(".endGame").text("Game Over");
+  $(".endGame").text("Game Over!");
   $(".correct").text("Right Answers: " + correctAnswers);
   $(".incorrect").text("Wrong Answers: " + incorrectAnswers);
   $(".stats").show();
@@ -67,6 +80,7 @@ function nextQuestion() {
   n++;
   $(".right").hide();
   $(".wrong").hide();
+  $(".timealert").hide();
   if (questions.length === n) {
     endGame();
     return;
@@ -77,15 +91,27 @@ function nextQuestion() {
   setHandler();
 }
 
+function timesUp() {
+  n++;
+  $(".right").hide();
+  $(".wrong").hide();
+  $(".timealert").hide();
+  if (questions.length === n) {
+    endGame();
+    return;
+  }
+}
+
 function timer() {
   count--;
   if (count <= -1) {
-    alert("Time is up!");
-    nextQuestion();
+    clearInterval(counter);
+    $(".timealert").show();
+    setTimeout(timesUp, 2000);
     return;
   }
 
-  $("#countdown").text(count);
+  $("#countdown").text("Time Remaining: " + count);
 }
 
 function choiceData() {
@@ -102,7 +128,6 @@ function shiftQuestion() {
 }
 
 function restart() {
-  console.log("restart called");
   correctAnswers = 0;
   incorrectAnswers = 0;
   n = 0;
