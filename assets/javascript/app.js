@@ -78,21 +78,8 @@ function endGame() {
 
 function nextQuestion() {
   n++;
-  $(".right").hide();
-  $(".wrong").hide();
-  $(".timealert").hide();
-  if (questions.length === n) {
-    endGame();
-    return;
-  }
   count = 30;
   counter = setInterval(timer, 1000);
-  shiftQuestion();
-  setHandler();
-}
-
-function timesUp() {
-  n++;
   $(".right").hide();
   $(".wrong").hide();
   $(".timealert").hide();
@@ -100,17 +87,20 @@ function timesUp() {
     endGame();
     return;
   }
+  shiftQuestion();
+  setHandler();
 }
 
 function timer() {
   count--;
   if (count <= -1) {
     clearInterval(counter);
+    $(".choices > div").off("click");
     $(".timealert").show();
-    setTimeout(timesUp, 2000);
+    count = 30
+    setTimeout(nextQuestion, 2000);
     return;
   }
-
   $("#countdown").text("Time Remaining: " + count);
 }
 
